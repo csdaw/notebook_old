@@ -1,9 +1,4 @@
----
-title: "notes-to-self"
-editor_options:
-  markdown:
-    mode: gfm
----
+# notes-to-self
 
 Things to remember. Like gists, but I hate the gists interface.
 
