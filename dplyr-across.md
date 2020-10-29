@@ -1,0 +1,56 @@
+Using dplyr `across()`
+================
+Charlotte Dawson
+29/10/2020
+
+Derived from
+[this](https://gist.github.com/mattansb/eb7d5dbe92e129f462c2f1288efd1615)
+gist from
+[this](https://mobile.twitter.com/mattansb/status/1320643417693630465)
+twitter post.
+
+Make a table of fake protein log2 abundances.
+
+``` r
+df <- data.frame(
+  s1 = c(19, 30, 18),
+  s2 = c(18, 32, 17),
+  s3 = c(18, 31, 18),
+  protein = c("protein A", "protein B", "protein C")
+)
+
+df
+```
+
+    ##   s1 s2 s3   protein
+    ## 1 19 18 18 protein A
+    ## 2 30 32 31 protein B
+    ## 3 18 17 18 protein C
+
+Make a function to perform row summaries quickly.
+
+``` r
+row_summary <- function(..., type = c("mean", "sum"), na.rm = TRUE) {
+  if(type == "mean") {
+    rowMeans(dplyr::across(...), na.rm = na.rm)
+  } else if (type == "sum") {
+    rowSums(dplyr::across(...), na.rm = na.rm)
+  } 
+}
+```
+
+Take the mean of the protein abundance columns by matching column names.
+
+``` r
+library(dplyr)
+
+df2 <- df %>% 
+  mutate(mean = row_summary(matches("s"), type = "mean"))
+
+df2
+```
+
+    ##   s1 s2 s3   protein     mean
+    ## 1 19 18 18 protein A 18.33333
+    ## 2 30 32 31 protein B 31.00000
+    ## 3 18 17 18 protein C 17.66667
