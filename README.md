@@ -1,4 +1,4 @@
-# notes-to-self
+# note-to-self
 
 Things to remember. Like gists, but I hate the gists interface.
 
