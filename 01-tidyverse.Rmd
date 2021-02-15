@@ -1,4 +1,4 @@
 # Tidyverse {#tidyverse}
 
-```{r, child=here::here("tidyverse", "dplyr-across.Rmd")}
+```{r, child=here::here("01-tidyverse", "dplyr-across.Rmd")}
 ```

@@ -8,11 +8,14 @@ output:
   #bookdown::pdf_book: default
 ---
 
-# How I made this notebook.
+# How I made this notebook {.unnumbered}
 
 1. Copy index.Rmd from https://github.com/yihui/bookdown-minimal.
 1. Change output to `bookdown::bs4_book`.
 1. Try rendering with `bookdown::render_book()`.
 1. Copy part of _output.yml from https://github.com/hadley/mastering-shiny.
+1. Make a blank .Rmd file for a chapter (contains sections).
+1. Make a folder and put individual .Rmd files for each section of a chapter.
+1. Add these section .Rmd files as child documents of the chapter .Rmd file.
 
 <!-- If you need PDF output, uncomment bookdown::pdf_book above in YAML. You will need a LaTeX installation, e.g., https://yihui.name/tinytex/ -->

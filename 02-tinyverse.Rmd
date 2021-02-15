@@ -1,4 +1,4 @@
 # Tinyverse {#tinyverse}
 
-```{r, child=here::here("tinyverse", "recursive-deps.Rmd")}
+```{r, child=here::here("02-tinyverse", "recursive-deps.Rmd")}
 ```

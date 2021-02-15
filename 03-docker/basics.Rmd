@@ -1,0 +1,30 @@
+## Basics
+
+```{bash, eval=FALSE}
+# List all containers
+docker ps -a
+
+# Stop all active containers
+docker stop $(docker ps -a -q)
+
+# Kill all active containers
+docker kill $(docker ps -q)
+
+# Remove all stopped containers
+docker rm $(docker ps -a -q)
+```
+
+```{bash, eval=FALSE}
+# List all images
+docker images
+
+# Remove all images
+docker rmi $(docker images -q)
+```
+
+```{bash, eval=FALSE}
+# How much space is taken up
+docker system df
+```
+
+
