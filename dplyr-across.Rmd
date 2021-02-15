@@ -9,8 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Derived from [this](https://gist.github.com/mattansb/eb7d5dbe92e129f462c2f1288efd1615) 
-gist from [this](https://mobile.twitter.com/mattansb/status/1320643417693630465) twitter post.
+Derived from [this](https://gist.github.com/mattansb/eb7d5dbe92e129f462c2f1288efd1615) gist from [this](https://mobile.twitter.com/mattansb/status/1320643417693630465) twitter post.
 
 Make a table of fake protein log2 abundances.
 
@@ -47,7 +46,3 @@ df2 <- df %>%
 
 df2
 ```
-
-
-
-
