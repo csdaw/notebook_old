@@ -1,0 +1,99 @@
+# Tinyverse {#tinyverse}
+
+## Get recursive dependencies
+
+### CRAN
+
+List recursive dependencies of ggplot2, for example. This should be all
+the packages that will be installed when one attempts to install ggplot2
+in a fresh R installation (v4.0.0 in this case).
+
+```{r}
+library(miniCRAN)
+```
+
+```{r}
+# Get vector of recursive dependencies in alphabetical order
+sort(
+  miniCRAN::pkgDep(
+    "ggplot2", 
+    depends = TRUE, 
+    suggests = FALSE, 
+    enhances = FALSE, 
+    includeBasePkgs = TRUE, 
+    Rversion = "4.0.0"
+  )
+)
+```
+
+Make a graph of these dependencies.
+
+```{r}
+# Make dependency graph
+dg <- miniCRAN::makeDepGraph(
+  "ggplot2", 
+  depends = TRUE, 
+  suggests = FALSE, 
+  enhances = FALSE, 
+  includeBasePkgs = TRUE, 
+  Rversion = "4.0.0"
+)
+set.seed(1)
+plot(dg, legendPosition = c(-1, -1), vertex.size = 10, cex = 0.7)
+```
+
+### Bioconductor
+
+List recursive dependencies of affy, for example. This should be all
+the packages that will be installed when one attempts to install affy
+in a fresh R installation (v4.0.0 in this case).
+
+```{r}
+# Get matrix of all Bioconductor packages and their URLs
+library(BiocManager)
+```
+
+```{r}
+biocUrl <- repositories()["BioCsoft"]
+
+index <- function(url, type="source", filters=NULL){
+  contribUrl <- contrib.url(url, type=type)
+  available.packages(contribUrl, type=type, filters=filters)
+}
+
+biocIndex <-index(biocUrl)
+
+# Get vector of recursive dependencies
+sort(
+  miniCRAN::pkgDep(
+    "affy",
+    availPkgs = biocIndex,
+    repos = biocIndex[,"Repository"],
+    depends = TRUE,
+    suggests = FALSE,
+    enhances = FALSE,
+    includeBasePkgs = TRUE,
+    Rversion = "4.0.0"
+  )
+)
+```
+
+Make a graph of these dependencies.
+
+```{r}
+# Make dependency graph
+dg <- miniCRAN::makeDepGraph(
+  "affy",
+  availPkgs = biocIndex,
+  repos = biocIndex[, "Packages"],
+  depends = TRUE, 
+  suggests = FALSE, 
+  enhances = FALSE, 
+  includeBasePkgs = TRUE, 
+  Rversion = "4.0.0"
+)
+
+set.seed(1)
+plot(dg, legendPosition = c(-1, -1), vertex.size = 10, cex = 0.7)
+```
+
