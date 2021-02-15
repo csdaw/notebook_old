@@ -1,6 +1,6 @@
-# note-to-self
+# notebook
 
-Things to remember. Like gists, but I hate the gists interface.
+My online notebook; things to remember. 
 
 ## Notes:
 
