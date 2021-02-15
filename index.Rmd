@@ -8,10 +8,10 @@ output:
   #bookdown::pdf_book: default
 ---
 
-# Hello World
+# How I made this notebook.
 
-Hi.
-
-Bye.
+1. Copy index.Rmd from https://github.com/yihui/bookdown-minimal.
+1. Change output to `bookdown::bs4_book`.
+1. Try rendering with `bookdown::render_book()`.
 
 <!-- If you need PDF output, uncomment bookdown::pdf_book above in YAML. You will need a LaTeX installation, e.g., https://yihui.name/tinytex/ -->
