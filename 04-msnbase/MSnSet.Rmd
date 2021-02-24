@@ -31,10 +31,10 @@ essential part of an MSnSet.
   * column names = sample names, must be unique, access with `sampleNames(MSnSet)`
   * data = expression values e.g. SILAC ratios, peptide intensities, etc.
   
-### featureData (optional)
+### featureData
 
-Contains metadata about the features (e.g. proteins, peptides, PSMs). For 
-example for protein features this object might contain the protein names, 
+Optional. Contains metadata about the features (e.g. proteins, peptides, PSMs). 
+For example for protein features this object might contain the protein names, 
 their lengths, isoelectric points, number of transmembrane domains, associated
 GO terms, etc.
 
@@ -55,10 +55,10 @@ data.frames
   * data = character, full description/name of the equipment generated 
     parameters e.g. `Number of transmembrane domains`
     
-### phenoData (optional)
+### phenoData
 
-Contains metadata about each sample, usually relating to the experimental 
-design, e.g. replicates, tissues, animals, treatments, etc.
+Optional. Contains metadata about each sample, usually relating to the 
+experimental design, e.g. replicates, tissues, animals, treatments, etc.
   
 * Access the overall object with `phenoData(MSnSet)`
 * Access the underlying data.frames with `pData(MSnSet)` 
@@ -76,11 +76,11 @@ data.frames.
   * data = character, full description of sample metadata parameters
     `Drug treatment`
     
-### protocolData (optional)
+### protocolData
 
-Contains equipment-generated information about the protocols used for each
-samples. The number of rows and the row names must match the number of columns
-and column names of `assayData`.
+Optional. Contains equipment-generated information about the protocols used for 
+each sample. The number of rows and the row names must match the number of 
+columns and column names of `assayData`.
 
 * Access the overall object with `protocolData(MSnSet)`
 * Access the underlying data.frames with `pData(protocolData(MSnSet))` 
@@ -97,9 +97,10 @@ data.frames
   * data = character, full description/name of the equipment generated 
     parameters e.g. `MS Model`
 
-### experimentData (optional)
+### experimentData
 
-Contains descriptive information about the experiment and the experimenter.
+Optional. Contains descriptive information about the experiment and the 
+experimenter.
 
 * Access the overall object with `experimentData(MSnSet)`
 * Object = a `Biobase::MIAME` object, which is essentially a list of several
