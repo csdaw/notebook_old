@@ -1,0 +1,91 @@
+## MSnSet
+
+What is an MSnSet? To quote from `MSnbase`:
+
+> The `MSnSet` class is derived form the `Biobase::eSet` class and mimics the
+`Biobase::ExpressionSet` class classically used for microarray data.
+
+Now to put this in my own words I would say the following:
+
+1. An MSnSet is a special type of list that describes an MS experiment. 
+1. This list contains multiple objects of different types (typically a matrix or 
+data.frame) that contains the data and metadata from this experiment
+1. These underlying objects must have a specific structure (e.g. matching sample 
+names), so that each individual object in this special list can be combined when necessary.
+
+Below we go through each object in an MSnSet.
+
+### assayData
+
+Description.
+
+* Access with `Biobase::exprs(MSnSet)`
+* Object = a matrix of expression values
+  * columns = samples, names must be unique
+  * rows = features (e.g. PSMs, peptides, proteins), names must be 
+    unique (e.g. UniProt accessions in protein groups like `Q12345;Q98765`)
+  * data = expression values e.g. SILAC ratios, peptide intensities, etc.
+
+### protocolData
+
+Description.
+
+* Access the overall object with `Biobase::protocolData(MSnSet)`
+* Access the underlying data.frames with `Biobase::pData(protocolData(MSnSet))` 
+  and `Biobase::varMetadata(protocolData(MSnSet))`.
+* Object = a `Biobase::AnnotatedDataFrame`, which is comprised of 2 
+data.frames. 
+* data.frame 1 (pData)
+  * rows = samples, names must be unique
+  * columns = short name of equipment-generated parameter e.g. `ms_model`
+  * data = can be numeric, character, factor, boolean
+* data.frame 2 (varMetadata)
+  * rows = name of equipment-generated parameter e.g. `ms_model`
+  * columns = a single column called `labelDescription`
+  * data = character, full names of the equipment generated parameters e.g.
+    `MS Model`
+
+```{r}
+library(Biobase)
+df <- data.frame(x=1:6,
+                 y=rep(c("Low", "High"),3),
+                 z=I(LETTERS[1:6]),
+                 row.names=paste("Sample", 1:6, sep="_"))
+metaData <-
+  data.frame(labelDescription=c(
+               "Numbers",
+               "Factor levels",
+               "Characters"))
+
+AnnotatedDataFrame()
+AnnotatedDataFrame(data=df)
+AnnotatedDataFrame(data=df, varMetadata=metaData)
+as(df, "AnnotatedDataFrame")
+
+obj <- AnnotatedDataFrame()
+pData(obj) <- df
+varMetadata(obj) <- metaData
+validObject(obj)
+```
+
+### phenoData
+
+Description.
+  
+* Access the overall object with `Biobase::phenoData(MSnSet)`
+* Access the underlying data.frames with `Biobase::pData(MSnSet)` 
+and `Biobase::varMetadata(MSnSet)`.
+* Object = a `Biobase::AnnotatedDataFrame`, which is comprised of 2 
+data.frames. 
+* Data.frame 1 = 
+  * Rows are
+  * Columns are
+* Data.frame 2 = 
+  * Rows are
+  * Columns are
+
+### featureData
+
+### experimentData
+
+### processingData

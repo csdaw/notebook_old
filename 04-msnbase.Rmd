@@ -1,0 +1,4 @@
+# MSnbase {#msnbase}
+
+```{r, child=here::here("04-msnbase", "MSnSet.Rmd")}
+```
