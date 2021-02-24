@@ -8,84 +8,130 @@ What is an MSnSet? To quote from `MSnbase`:
 Now to put this in my own words I would say the following:
 
 1. An MSnSet is a special type of list that describes an MS experiment. 
-1. This list contains multiple objects of different types (typically a matrix or 
-data.frame) that contains the data and metadata from this experiment
+1. This list contains multiple objects of different types (typically a matrix or
+data.frame) that contains the quantitative data and metadata from this experiment
 1. These underlying objects must have a specific structure (e.g. matching sample 
-names), so that each individual object in this special list can be combined when necessary.
+names and the correct dimensions), so that each individual object in this 
+special list can be combined when necessary.
 
 Below we go through each object in an MSnSet.
 
 ### assayData
 
-Description.
+Contains the quantitative data from the experiment, i.e. how much of each
+feature (e.g. PSM, peptide, protein) was detected in each sample. This is the 
+essential part of an MSnSet.
 
-* Access with `Biobase::exprs(MSnSet)`
-* Object = a matrix of expression values
-  * columns = samples, names must be unique
-  * rows = features (e.g. PSMs, peptides, proteins), names must be 
-    unique (e.g. UniProt accessions in protein groups like `Q12345;Q98765`)
+* Access with `exprs(MSnSet)`
+* Object = a matrix of expression values, access the dimensions with 
+  `dim(MSnSet)`
+  * row names = feature names (e.g. PSMs, peptides, proteins), must be 
+    unique (e.g. UniProt accessions in protein groups like `Q12345;Q98765`),
+    access with `featureNames(MSnSet)`
+  * column names = sample names, must be unique, access with `sampleNames(MSnSet)`
   * data = expression values e.g. SILAC ratios, peptide intensities, etc.
+  
+### featureData (optional)
 
-### protocolData
+Contains metadata about the features (e.g. proteins, peptides, PSMs). For 
+example for protein features this object might contain the protein names, 
+their lengths, isoelectric points, number of transmembrane domains, associated
+GO terms, etc.
 
-Description.
+* Access the overall object with `featureData(MSnSet)`
+* Access the underlying data.frames with `fData(MSnSet)` 
+  and `fvarMetadata(MSnSet)`.
+* Object = a `Biobase::AnnotatedDataFrame`, which is comprised of 2 
+data.frames
+* data.frame 1 (fData)
+  * row names = feature names (e.g. PSMs, peptides, proteins), names must be 
+    unique (e.g. UniProt accessions in protein groups like `Q12345;Q98765`)
+  * column names = short name of feature parameter e.g. `transmem`, access with
+    `fvarLabels(MSnSet)`
+  * data = can be numeric, character, factor, boolean
+* data.frame 2 (varMetadata, optional)
+  * row names = name of equipment-generated parameter e.g. `transmem`
+  * column = a single column called `labelDescription`
+  * data = character, full description/name of the equipment generated 
+    parameters e.g. `Number of transmembrane domains`
+    
+### phenoData (optional)
 
-* Access the overall object with `Biobase::protocolData(MSnSet)`
-* Access the underlying data.frames with `Biobase::pData(protocolData(MSnSet))` 
-  and `Biobase::varMetadata(protocolData(MSnSet))`.
+Contains metadata about each sample, usually relating to the experimental 
+design, e.g. replicates, tissues, animals, treatments, etc.
+  
+* Access the overall object with `phenoData(MSnSet)`
+* Access the underlying data.frames with `pData(MSnSet)` 
+  and `varMetadata(MSnSet)`.
 * Object = a `Biobase::AnnotatedDataFrame`, which is comprised of 2 
 data.frames. 
 * data.frame 1 (pData)
-  * rows = samples, names must be unique
-  * columns = short name of equipment-generated parameter e.g. `ms_model`
+  * row names = sample names, must be unique
+  * column names = short name of sample metadata parameters e.g. `trt`, access
+    with `MSnSet$`
   * data = can be numeric, character, factor, boolean
-* data.frame 2 (varMetadata)
-  * rows = name of equipment-generated parameter e.g. `ms_model`
-  * columns = a single column called `labelDescription`
-  * data = character, full names of the equipment generated parameters e.g.
-    `MS Model`
+* data.frame 2 (varMetadata, optional)
+  * row names = short name of sample metadata parameters e.g. `trt`
+  * column = a single column called `labelDescription`
+  * data = character, full description of sample metadata parameters
+    `Drug treatment`
+    
+### protocolData (optional)
 
-```{r}
-library(Biobase)
-df <- data.frame(x=1:6,
-                 y=rep(c("Low", "High"),3),
-                 z=I(LETTERS[1:6]),
-                 row.names=paste("Sample", 1:6, sep="_"))
-metaData <-
-  data.frame(labelDescription=c(
-               "Numbers",
-               "Factor levels",
-               "Characters"))
+Contains equipment-generated information about the protocols used for each
+samples. The number of rows and the row names must match the number of columns
+and column names of `assayData`.
 
-AnnotatedDataFrame()
-AnnotatedDataFrame(data=df)
-AnnotatedDataFrame(data=df, varMetadata=metaData)
-as(df, "AnnotatedDataFrame")
-
-obj <- AnnotatedDataFrame()
-pData(obj) <- df
-varMetadata(obj) <- metaData
-validObject(obj)
-```
-
-### phenoData
-
-Description.
-  
-* Access the overall object with `Biobase::phenoData(MSnSet)`
-* Access the underlying data.frames with `Biobase::pData(MSnSet)` 
-and `Biobase::varMetadata(MSnSet)`.
+* Access the overall object with `protocolData(MSnSet)`
+* Access the underlying data.frames with `pData(protocolData(MSnSet))` 
+  and `varMetadata(protocolData(MSnSet))`.
 * Object = a `Biobase::AnnotatedDataFrame`, which is comprised of 2 
-data.frames. 
-* Data.frame 1 = 
-  * Rows are
-  * Columns are
-* Data.frame 2 = 
-  * Rows are
-  * Columns are
+data.frames
+* data.frame 1 (pData)
+  * row names = sample names, must be unique
+  * column names = short name of equipment-generated parameter e.g. `ms_model`
+  * data = can be numeric, character, factor, boolean
+* data.frame 2 (varMetadata, optional)
+  * row names = name of equipment-generated parameter e.g. `ms_model`
+  * column = a single column called `labelDescription`
+  * data = character, full description/name of the equipment generated 
+    parameters e.g. `MS Model`
 
-### featureData
+### experimentData (optional)
 
-### experimentData
+Contains descriptive information about the experiment and the experimenter.
+
+* Access the overall object with `experimentData(MSnSet)`
+* Object = a `Biobase::MIAME` object, which is essentially a list of several
+  characters and lists.
+  * _name_ = character, contains experimenter name, access with     
+    `expinfo(MSnSet)`
+  * _lab_ = character, lab where experiment was conducted, access with     
+    `expinfo(MSnSet)`
+  * _contact_ = character, contact info for experimenter and/or lab, access 
+    with `expinfo(MSnSet)`
+  * _url_ = character, URL for experiment, access with     
+    `expinfo(MSnSet)`
+  * _title_ = character, single-sentence experiment title, access with     
+    `expinfo(MSnSet)`
+  * _abstract_ = character, abstract describing the experiment, access with     
+    `abstract(MSnSet)`
+  * See `Biobase::MIAME` for info about other (probably unnecessary) sub-objects.
 
 ### processingData
+
+Contains the version of MSnbase was used to construct the MSnSet and
+also a log of what processes have been applied to the MSnSet.
+
+* Access the overall object with `processingData(MSnSet)`
+* Object = an `MSnProcess` object, which contains several sub-objects that 
+  can be accessed using `processingData(MSnSet)@`
+  * _files_
+  * _processing_
+  * _merged_
+  * _cleaned_
+  * _removedPeaks_
+  * _smoothed_
+  * _trimmed_
+  * _normalised_
+  * _MSnbaseVersion_
