@@ -1,0 +1,58 @@
+## ComplexUpset
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(ComplexUpset)
+
+make_venn_table <- function(data) {
+  # check if input list is named
+  if (!rlang::is_named(data)) {
+    names(data) <- paste0("set", 1:length(data))
+  }
+  values <- purrr::reduce(data, function(x, y) union(x, y))
+  venn_table <- tibble::tibble(
+    "value" = values,
+    purrr::map_df(data, function(x) values %in% x)
+  )
+  venn_table
+}
+```
+
+
+```{r}
+set.seed(2021)
+all_genes <- replicate(1000, {
+  paste(c(sample(LETTERS, 3), sample(0:9, 1)), collapse = "")
+})
+
+toy <- list(
+  "set1" = sample(all_genes, 300),
+  "set2" = sample(all_genes, 270),
+  "set3" = sample(all_genes, 260)
+)
+```
+
+```{r}
+tidy_toy <- toy %>% 
+  make_venn_table() %>% 
+  as.data.frame() %>% 
+  tibble::column_to_rownames("value")
+```
+
+```{r}
+ggplot(arrange_venn(tidy_toy)) + 
+  coord_fixed() + 
+  theme_void() + 
+  scale_color_venn_mix(tidy_toy) + 
+  geom_venn_region(tidy_toy, alpha = 0.05) + 
+  geom_venn_circle(tidy_toy) + 
+  geom_venn_label_set(tidy_toy, aes(label = region)) + 
+  geom_venn_label_region(
+    tidy_toy, aes(label = size),
+    outwards_adjust = 1.75,
+    position = position_nudge(y = 0)
+  ) + 
+  scale_fill_venn_mix(tidy_toy, guide = FALSE)
+```
+
