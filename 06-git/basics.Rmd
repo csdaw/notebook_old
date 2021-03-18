@@ -1,0 +1,88 @@
+## Basics
+
+### Inspect pull request locally
+
+Assumes that the main branch is called `master` and the remote is called `origin`.
+
+1. Make note of the PR number
+
+2. Fetch the PR pseudo-branch and create a local branch, called `pr37` in
+   this case
+
+```{bash, eval=FALSE}
+git fetch origin pull/37/head:pr37
+```
+
+3. Switch to that branch and have a look around
+
+```{bash, eval=FALSE}
+git checkout pr37
+```
+
+4. If the PR code changes on remote, incorporate the changes into the local
+branch `pr37`.
+
+```{bash, eval=FALSE}
+# best to do fetch and merge
+git fetch origin pull/37/head
+git merge origin/pull/37/head
+
+# or can just pull
+git pull origin pull/37/head
+```
+
+### Merge pull request locally
+
+#### Local master up-to-date with remote
+
+1. Switch to the local `master` branch
+
+```{bash, eval=FALSE}
+git checkout master
+```
+
+2. Merge the pull request
+
+```{bash, eval=FALSE}
+# Create merge commit
+git merge pr37 --no-ff -m 'Name of pull request (#37)'
+
+# Use fast-forward merge
+git merge pr37 -m 'Name of pull request (#37)'
+```
+
+3. Push changes to the remote `master` branch
+
+```{bash, eval=FALSE}
+git push
+```
+
+#### Local master _not_ up-to-date with remote
+
+1. Create a branch to track the remote `master` branch
+
+```{bash, eval=FALSE}
+git checkout -t -b origin_master origin/master
+```
+
+2. Switch to this branch
+
+```{bash, eval=FALSE}
+git checkout origin_master
+```
+
+3. Merge the pull request
+
+```{bash, eval=FALSE}
+# Create merge commit
+git merge pr37 --no-ff -m 'Name of pull request (#37)'
+
+# Use fast-forward merge
+git merge pr37 -m 'Name of pull request (#37)'
+```
+
+4. Push changes to the remote `master` branch
+
+```{bash, eval=FALSE}
+git push origin HEAD:master
+```

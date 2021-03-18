@@ -1,0 +1,4 @@
+# git {#git}
+
+```{r, child=here::here("06-git", "basics.Rmd")}
+```
