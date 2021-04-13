@@ -1,3 +1,3 @@
 # notebook
 
-My online notebook; things to remember. 
+My online notebook; contains things to remember. 
