@@ -4,7 +4,9 @@ author: "Charlotte Dawson"
 site: bookdown::bookdown_site
 documentclass: book
 output:
-  bookdown::bs4_book
+  bookdown::bs4_book:
+    theme:
+      primary: "#7F423D"
   #bookdown::pdf_book: default
 ---
 
